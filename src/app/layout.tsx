@@ -7,22 +7,30 @@ const display = Unbounded({ variable: "--font-display", subsets: ["latin", "cyri
 const body = Onest({ variable: "--font-body", subsets: ["latin", "cyrillic"] });
 const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin", "cyrillic"] });
 
+const title = `${person.name} — ${person.role.toLowerCase()}`;
+
 export const metadata: Metadata = {
-  title: `${person.name} — ${person.role}`,
+  title,
   description: hero.lead,
-  openGraph: { title: `${person.name} — ${person.role}`, description: hero.lead, locale: "ru_RU", type: "website" },
+  openGraph: { title, description: hero.lead, locale: "ru_RU", type: "website" },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f4f8" },
-    { media: "(prefers-color-scheme: dark)", color: "#14121c" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f4f9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0d16" },
   ],
 };
 
+// До первой отрисовки: блоки прячутся для появления только если движение разрешено и JS работает
+const motionFlag = `if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="ru" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: motionFlag }} />
+      </head>
       <body>{children}</body>
     </html>
   );
