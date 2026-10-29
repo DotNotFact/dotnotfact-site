@@ -4,14 +4,12 @@ import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { Motion } from "@/components/Motion";
 import {
-  about,
   aiPrinciples,
   cta,
   directions,
   hero,
   manifesto,
   nav,
-  notFor,
   person,
   steps,
   stories,
@@ -179,36 +177,6 @@ export default function Home() {
               </li>
             ))}
           </ol>
-        </section>
-
-        <section className="section" aria-labelledby="not-for-h">
-          <h2 id="not-for-h" className="h2" data-reveal>
-            Когда я вам не подхожу
-          </h2>
-          <ul className="list">
-            {notFor.map((n, i) => (
-              <li key={n.title} data-reveal style={order(i)}>
-                <h3>{n.title}</h3>
-                <p>{n.body}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section id="about" className="section" aria-labelledby="about-h">
-          <h2 id="about-h" className="h2" data-reveal>
-            Обо мне
-          </h2>
-          <div className="prose" data-reveal>
-            {about.body.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-          <ul className="chips" aria-label="Технологии" data-reveal>
-            {about.stack.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
         </section>
 
         <section className="section cta" aria-labelledby="cta-h" data-reveal>
