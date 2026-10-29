@@ -4,14 +4,15 @@ import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { Motion } from "@/components/Motion";
 import {
-  aiPrinciples,
   cta,
   directions,
+  faq,
   hero,
+  layers,
   manifesto,
   nav,
+  packages,
   person,
-  steps,
   stories,
 } from "@/content";
 
@@ -30,17 +31,21 @@ const jsonLd = {
       email: `mailto:${person.email}`,
       address: { "@type": "PostalAddress", addressLocality: "Ессентуки", addressCountry: "RU" },
       sameAs: [`https://github.com/${person.github}`, tg],
-      knowsAbout: ["C#", "ASP.NET Core", "PostgreSQL", "Next.js", "TypeScript", "LLM", "YandexGPT", "GigaChat"],
+      knowsAbout: ["RAG", "ИИ-агенты", "MCP", "n8n", "LangGraph", "C#", "ASP.NET Core", "Next.js", "PostgreSQL", "YandexGPT", "GigaChat"],
     },
     {
       "@type": "ProfessionalService",
-      name: `${person.name} — разработка и продукты с ИИ`,
+      name: `${person.name} — внедрение ИИ в бизнес`,
       url: person.site,
       description: hero.lead,
       provider: { "@id": `${person.site}#person` },
       areaServed: "RU",
       availableLanguage: "ru",
       knowsAbout: directions.map((d) => d.title),
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
   ],
 };
@@ -120,23 +125,28 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="ai" className="section" aria-labelledby="ai-h">
+        <section id="stack" className="section" aria-labelledby="stack-h">
           <div className="section__head" data-reveal>
-            <h2 id="ai-h" className="h2">
-              ИИ в работе
+            <h2 id="stack-h" className="h2">
+              Как я строю ИИ-системы
             </h2>
-            <p className="section__lead">Как в продукте, так и в том, как я его строю.</p>
+            <p className="section__lead">Шесть слоёв — и за каждый отвечает инженер, а не фреймворк.</p>
           </div>
           <ul className="cards">
-            {aiPrinciples.map((a, i) => (
-              <li key={a.title} className="card card--principle" data-reveal style={order(i % 2)}>
+            {layers.map((l, i) => (
+              <li key={l.title} className="card card--layer" data-reveal style={order(i % 2)}>
                 <div className="card__head">
                   <span className="card__icon">
-                    <Icon name={a.icon} />
+                    <Icon name={l.icon} />
                   </span>
-                  <h3>{a.title}</h3>
+                  <h3>{l.title}</h3>
                 </div>
-                <p>{a.body}</p>
+                <p>{l.body}</p>
+                <ul className="card__tags" aria-label="Технологии">
+                  {l.tech.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
@@ -162,21 +172,40 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="steps" className="section" aria-labelledby="steps-h">
-          <h2 id="steps-h" className="h2" data-reveal>
-            Как начинаем
-          </h2>
+        <section id="packages" className="section" aria-labelledby="packages-h">
+          <div className="section__head" data-reveal>
+            <h2 id="packages-h" className="h2">
+              Как работаем
+            </h2>
+            <p className="section__lead">Пакетами, а не почасово: вы платите за результат, а не за мои часы.</p>
+          </div>
           <ol className="cards cards--4 steps">
-            {steps.map((s, i) => (
-              <li key={s.title} className="step" data-reveal style={order(i % 2)}>
+            {packages.map((s, i) => (
+              <li key={s.title} className="step step--package" data-reveal style={order(i % 2)}>
                 <span className="step__n" aria-hidden="true">
                   {i + 1}
                 </span>
                 <h3>{s.title}</h3>
+                <p className="step__time">{s.time}</p>
                 <p>{s.body}</p>
+                <p className="step__get">{s.get}</p>
               </li>
             ))}
           </ol>
+        </section>
+
+        <section id="faq" className="section" aria-labelledby="faq-h">
+          <h2 id="faq-h" className="h2" data-reveal>
+            Частые вопросы
+          </h2>
+          <div className="faq" data-reveal>
+            {faq.map((f) => (
+              <details key={f.q} className="faq__item">
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
         </section>
 
         <section className="section cta" aria-labelledby="cta-h" data-reveal>
