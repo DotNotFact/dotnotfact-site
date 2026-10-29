@@ -82,7 +82,7 @@
   :root {
     --gutter: 32px;
     --s-section: 128px;
-    --pad: 28px;
+    --pad: 32px;
   }
 }
 
@@ -157,7 +157,7 @@ a {
   color: var(--sel-head);
 }
 
-.card__foot::selection,
+.card__tags li::selection,
 .chips li::selection {
   color: var(--sel-mono);
 }
@@ -440,7 +440,7 @@ a {
    вертикалях. Внутри любые две колонки делят ширину 1:1 с одним зазором. */
 .container {
   width: 100%;
-  max-width: calc(960px + 2 * var(--gutter));
+  max-width: calc(1200px + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
@@ -790,12 +790,63 @@ html.motion .hero__in {
   line-height: 1.6;
 }
 
-.card__foot {
-  align-self: start;
-  padding-top: 14px;
+/* Карточка направления: иконка, заголовок, что это, что получаете, метки.
+   Пять рядов подсетки — части соседних карточек стоят на одних линиях. */
+.card--direction {
+  grid-row: span 5;
+  row-gap: 14px;
+}
+
+.card__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.card:hover .card__icon {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+}
+
+.card__result {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 6px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
-  font: 400 13px/1.55 var(--font-mono), monospace !important;
-  color: var(--muted);
+}
+
+.card__tags li {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  font: 400 13px/1.2 var(--font-mono), monospace;
+  color: var(--text);
+}
+
+/* Четыре в ряд — делят ширину по той же середине, что и две */
+@media (min-width: 1040px) {
+  .cards--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* ── Шаги — настоящая последовательность, поэтому с номерами ───────────── */
