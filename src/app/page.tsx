@@ -127,10 +127,10 @@ export default function Home() {
         </section>
 
         <section id="about" className="section wrap about" aria-labelledby="about-h">
+          <h2 id="about-h" className="h2" data-reveal>
+            Обо мне
+          </h2>
           <div data-reveal>
-            <h2 id="about-h" className="h2">
-              Обо мне
-            </h2>
             {about.body.map((p) => (
               <p key={p} className="about__p">
                 {p}

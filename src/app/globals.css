@@ -22,6 +22,11 @@
   --dot: rgb(22 19 31 / 0.09);
   --radius: 18px;
   --gutter: 16px;
+  /* Ритм: три шага на всю страницу */
+  --s-section: 88px;
+  --s-head: 32px;
+  --pad: 22px;
+  --gap: 16px;
   color-scheme: light;
 }
 
@@ -76,6 +81,8 @@
 @media (min-width: 720px) {
   :root {
     --gutter: 32px;
+    --s-section: 128px;
+    --pad: 28px;
   }
 }
 
@@ -445,8 +452,8 @@ a {
   align-content: center;
   justify-items: start;
   min-height: calc(88svh - 64px);
-  padding-top: 72px;
-  padding-bottom: 96px;
+  padding-top: 48px;
+  padding-bottom: 0;
 }
 
 .status {
@@ -553,63 +560,39 @@ html.motion .hero__in {
   }
 }
 
-/* Маркер: проводится по строке, как ручкой по распечатке */
+/* Маркер: проводится по строке, как ручкой по распечатке. Без внутренних
+   отступов — текст стоит на той же линии, что и соседние абзацы. */
 .price {
   color: var(--marker-ink);
-  background: linear-gradient(
-      100deg,
-      transparent 0.4em,
-      var(--marker) 0.6em,
-      var(--marker) calc(100% - 0.6em),
-      transparent calc(100% - 0.4em)
-    )
-    no-repeat 0 60% / 100% 88%;
-  padding: 0.05em 0.35em;
-  margin-inline: -0.35em;
+  background: linear-gradient(var(--marker), var(--marker)) no-repeat 0 62% / 100% 82%;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 
 @keyframes marker {
   from {
-    background-size: 0% 88%;
+    background-size: 0% 82%;
     color: var(--text);
   }
 }
 
-/* ── Манифест ──────────────────────────────────────────────────────────── */
-.manifesto {
-  display: grid;
-  gap: 28px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+/* ── Секции: один шаг сверху, один шаг под заголовком ─────────────────── */
+.section,
+.manifesto,
+.cta {
+  padding-top: var(--s-section);
 }
 
-@media (min-width: 900px) {
-  .manifesto {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 64px;
-  }
-}
-
-.manifesto__title {
-  font: 700 clamp(1.6rem, 3vw, 2.35rem) / 1.18 var(--font-display), sans-serif;
+.h2 {
+  margin-bottom: var(--s-head);
+  font: 700 clamp(1.55rem, 3vw, 2.4rem) / 1.18 var(--font-display), sans-serif;
   letter-spacing: -0.015em;
-}
-
-.manifesto__body {
-  font-size: 20px;
-  color: var(--text);
-}
-
-/* ── Секции ────────────────────────────────────────────────────────────── */
-.section {
-  padding-top: 120px;
+  text-wrap: balance;
 }
 
 .section__head {
   max-width: 760px;
-  margin-bottom: 40px;
+  margin-bottom: var(--s-head);
 }
 
 .section__head .h2 {
@@ -622,16 +605,63 @@ html.motion .hero__in {
   color: var(--muted);
 }
 
-.h2 {
-  margin-bottom: 40px;
-  font: 700 clamp(1.55rem, 3vw, 2.4rem) / 1.18 var(--font-display), sans-serif;
-  letter-spacing: -0.015em;
+/* Общая карточка: один отступ, одна рамка, один радиус */
+.direction,
+.story,
+.notfor li {
+  padding: var(--pad);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
 }
 
-/* Направления */
+.direction h3,
+.story h3,
+.notfor h3 {
+  font-size: 20px;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.direction p,
+.story p,
+.notfor p,
+.step p {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* ── Манифест ──────────────────────────────────────────────────────────── */
+.manifesto {
+  display: grid;
+  gap: var(--s-head);
+}
+
+@media (min-width: 900px) {
+  .manifesto {
+    /* Те же колонки, что у историй: правый текст стоит на линии правой карточки */
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--gap);
+  }
+}
+
+.manifesto__title {
+  font: 700 clamp(1.6rem, 3vw, 2.35rem) / 1.18 var(--font-display), sans-serif;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.manifesto__body {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+/* ── Направления: подсетка — заголовки, тексты и подписи соседних карточек
+   стоят на одних горизонталях ─────────────────────────────────────────── */
 .directions {
   display: grid;
-  gap: 16px;
+  gap: var(--gap);
 }
 
 @media (min-width: 720px) {
@@ -647,14 +677,10 @@ html.motion .hero__in {
 }
 
 .direction {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 28px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  backdrop-filter: blur(14px);
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 12px;
   transition:
     border-color 0.3s ease,
     transform 0.3s ease,
@@ -667,27 +693,18 @@ html.motion .hero__in {
   box-shadow: 0 30px 60px -36px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
-.direction__title {
-  font-size: 21px;
-  line-height: 1.3;
-}
-
-.direction p {
-  font-size: 16.5px;
-}
-
 .direction__proof {
-  margin-top: auto;
+  align-self: start;
   padding-top: 14px;
   border-top: 1px solid var(--line);
   font: 400 13px/1.55 var(--font-mono), monospace;
   color: var(--muted);
 }
 
-/* Истории */
+/* ── Истории ───────────────────────────────────────────────────────────── */
 .stories {
   display: grid;
-  gap: 16px;
+  gap: var(--gap);
 }
 
 @media (min-width: 860px) {
@@ -698,28 +715,15 @@ html.motion .hero__in {
 
 .story {
   display: grid;
-  align-content: start;
-  gap: 14px;
-  padding: 30px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  backdrop-filter: blur(14px);
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 12px;
 }
 
-.story__lead {
-  font-size: 21px;
-  line-height: 1.3;
-}
-
-.story p {
-  font-size: 16.5px;
-}
-
-/* Шаги — настоящая последовательность, поэтому с номерами */
+/* ── Шаги — настоящая последовательность, поэтому с номерами ───────────── */
 .steps {
   display: grid;
-  gap: 16px;
+  gap: var(--gap);
 }
 
 @media (min-width: 720px) {
@@ -736,7 +740,11 @@ html.motion .hero__in {
 
 .step {
   position: relative;
-  padding: 26px 24px 28px;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 12px;
+  padding-top: 24px;
   border-top: 2px solid var(--line);
 }
 
@@ -756,7 +764,7 @@ html.motion .hero__in {
 }
 
 .step__n {
-  display: inline-grid;
+  display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
@@ -767,26 +775,28 @@ html.motion .hero__in {
 }
 
 .step__title {
-  margin: 18px 0 8px;
-  font-size: 18px;
-  line-height: 1.35;
+  font-size: 19px;
+  line-height: 1.3;
 }
 
 .step p {
-  font-size: 16px;
   color: var(--muted);
 }
 
-/* Когда не подхожу */
+/* ── Когда не подхожу: заголовок слева, список справа, верх по одной линии */
 .split {
   display: grid;
-  gap: 8px;
 }
 
 @media (min-width: 900px) {
   .split {
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: 48px;
+    column-gap: 48px;
+    align-items: start;
+  }
+
+  .split .h2 {
+    margin-bottom: 0;
   }
 }
 
@@ -795,83 +805,71 @@ html.motion .hero__in {
   gap: 12px;
 }
 
-.notfor li {
-  padding: 22px 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  backdrop-filter: blur(14px);
-}
-
-.notfor h3 {
-  font-size: 18px;
-  line-height: 1.35;
-}
-
 .notfor p {
   margin-top: 6px;
-  font-size: 16px;
   color: var(--muted);
 }
 
-/* Обо мне */
+/* ── Обо мне ───────────────────────────────────────────────────────────── */
 .about {
   display: grid;
-  gap: 40px;
+  row-gap: var(--s-head);
 }
 
 @media (min-width: 900px) {
   .about {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: 64px;
+    column-gap: 64px;
     align-items: start;
   }
+
+}
+
+.about .h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
 }
 
 .about__p {
-  margin-top: 18px;
   max-width: 60ch;
+}
+
+.about__p + .about__p {
+  margin-top: 16px;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 20px;
 }
 
 .chips li {
-  padding: 7px 13px;
+  padding: 8px 14px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  font: 400 13px/1 var(--font-mono), monospace;
+  font: 400 14px/1 var(--font-mono), monospace;
   color: var(--text);
 }
 
-/* Призыв */
+/* ── Призыв: на той же левой линии, что и всё остальное ────────────────── */
 .cta {
-  margin-top: 140px;
-  padding-top: 72px;
-  padding-bottom: 72px;
-  text-align: center;
+  padding-bottom: var(--s-section);
 }
 
 .cta__title {
   max-width: 18ch;
-  margin-inline: auto;
   font: 700 clamp(1.9rem, 4.4vw, 3.3rem) / 1.1 var(--font-display), sans-serif;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .cta__body {
   max-width: 54ch;
-  margin: 22px auto 0;
+  margin-top: 12px;
+  font-size: 19px;
   color: var(--muted);
-}
-
-.cta .actions {
-  justify-content: center;
 }
 
 .foot {
@@ -890,8 +888,4 @@ html.motion .hero__in {
   color: var(--accent);
   font-weight: 600;
   text-decoration: none;
-}
-
-.about .h2 {
-  margin-bottom: 0;
 }
