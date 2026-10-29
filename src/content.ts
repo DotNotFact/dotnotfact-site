@@ -14,7 +14,8 @@ export const person = {
 
 export const nav = [
   { href: "#directions", label: "Что строю" },
-  { href: "#practice", label: "Как работаю" },
+  { href: "#practice", label: "Как решаю" },
+  { href: "#steps", label: "Как начинаем" },
   { href: "#about", label: "Обо мне" },
 ];
 
