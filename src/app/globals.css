@@ -156,8 +156,7 @@ a {
   color: var(--sel-head);
 }
 
-.card__tags li::selection,
-.chips li::selection {
+.card__tags li::selection {
   color: var(--sel-mono);
 }
 
@@ -791,22 +790,20 @@ html.motion .hero__in {
 }
 
 .card h3,
-.step h3,
-.list h3 {
+.step h3 {
   font-size: 20px;
   line-height: 1.3;
   text-wrap: balance;
 }
 
 .card p,
-.step p,
-.list p {
+.step p {
   font-size: 17px;
   line-height: 1.6;
 }
 
 /* Карточка направления: иконка, заголовок, что это, что получаете, метки.
-   Пять рядов подсетки — части соседних карточек стоят на одних линиях. */
+   Четыре ряда подсетки — части соседних карточек стоят на одних линиях. */
 .card--direction {
   grid-row: span 4;
   row-gap: 14px;
@@ -940,45 +937,6 @@ html.motion .hero__in {
   color: var(--muted);
 }
 
-/* ── Список «не подхожу»: строки с линией, без второй колонки ──────────── */
-.list li {
-  display: grid;
-  gap: 4px;
-  padding-block: 20px;
-  border-top: 1px solid var(--line);
-}
-
-.list li:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
-.list p {
-  color: var(--muted);
-}
-
-/* ── Обо мне ───────────────────────────────────────────────────────────── */
-.prose {
-  display: grid;
-  gap: 16px;
-  max-width: 62ch;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: var(--s-head);
-}
-
-.chips li {
-  padding: 8px 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  font: 400 14px/1 var(--font-mono), monospace;
-  color: var(--text);
-}
-
 /* ── Призыв ────────────────────────────────────────────────────────────── */
 .cta {
   padding-bottom: var(--s-section);
@@ -1054,9 +1012,13 @@ html.motion .hero__in {
   outline-offset: -3px;
 }
 
+/* Подсказка всегда своей строкой справа: в строке меток она то влезала, то
+   переносилась — в соседних карточках стояла по-разному */
 .card__tags .card__hint {
-  margin-left: auto;
+  flex-basis: 100%;
+  margin-top: 4px;
   padding: 5px 0;
+  text-align: right;
   background: none;
   font: 600 14px/1.2 var(--font-body), sans-serif;
   color: var(--accent);
