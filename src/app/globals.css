@@ -812,6 +812,28 @@ html.motion .hero__in {
   row-gap: 14px;
 }
 
+/* Явные ряды лицевых частей: обратная сторона стоит в тех же ячейках
+   (ряды 1–4), и автоматическая раскладка не должна выталкивать лицо вниз */
+.card--direction > * {
+  grid-column: 1;
+}
+
+.card--direction > :nth-child(1) {
+  grid-row: 1;
+}
+
+.card--direction > :nth-child(2) {
+  grid-row: 2;
+}
+
+.card--direction > :nth-child(3) {
+  grid-row: 3;
+}
+
+.card--direction > :nth-child(4) {
+  grid-row: 4;
+}
+
 /* Шапка карточки: иконка и заголовок одной строкой, по центру друг друга;
    текст ниже начинается на левой линии иконки */
 .card__head {
@@ -1050,16 +1072,21 @@ html.motion .hero__in {
   translate: 4px 0;
 }
 
+/* Обратная сторона — не слой поверх, а ячейка той же сетки на все ряды
+   карточки: если она длиннее лицевой, карточка (и её соседка в ряду)
+   вырастают, и прокрутка не нужна. Отрицательный отступ растягивает фон
+   на поля карточки, а свой padding возвращает текст на её линии. */
 .card__back {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 2;
+  grid-row: 1 / -1;
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: calc(-1 * var(--pad));
   padding: var(--pad);
   background: var(--surface-solid);
-  overflow-y: auto;
   cursor: default;
   clip-path: circle(0 at var(--cx) var(--cy));
   transition: clip-path 0.55s cubic-bezier(0.6, 0, 0.2, 1);
@@ -1104,4 +1131,33 @@ html.motion .hero__in {
 
 .bar__name:hover .logo {
   rotate: -8deg;
+}
+
+/* ── Системные элементы в цветах сайта ────────────────────────────────────
+   Полоса прокрутки, курсор ввода, флажки и ползунки браузер иначе рисует
+   своими серыми — на тёмной теме это белая полоса сбоку. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 45%, transparent) transparent;
+  accent-color: var(--accent);
+  caret-color: var(--accent);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 45%, transparent) padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent) padding-box;
 }
