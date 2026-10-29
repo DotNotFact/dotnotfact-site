@@ -6,7 +6,7 @@ import type { Direction } from "@/content";
 
 // Карточка направления с обратной стороной: клик в любом месте открывает пример
 // задачи и первый шаг. Обратная сторона раскрывается кругом от точки клика.
-// Кнопка растянута на всю карточку — курсор «рука» там, где клик правда работает.
+// Кнопка растянута на всю карточку - курсор «рука» там, где клик правда работает.
 export function FlipCard({ d, i, tg }: { d: Direction; i: number; tg: string }) {
   const [open, setOpen] = useState(false);
   const [origin, setOrigin] = useState({ x: "50%", y: "50%" });
@@ -16,7 +16,7 @@ export function FlipCard({ d, i, tg }: { d: Direction; i: number; tg: string }) 
 
   const show = (e: MouseEvent<HTMLButtonElement>) => {
     const card = e.currentTarget.closest("li")?.getBoundingClientRect();
-    // С клавиатуры координат нет (0,0) — раскрываем из центра
+    // С клавиатуры координат нет (0,0) - раскрываем из центра
     if (card && e.clientX) setOrigin({ x: `${e.clientX - card.left}px`, y: `${e.clientY - card.top}px` });
     setOpen(true);
     requestAnimationFrame(() => back.current?.querySelector<HTMLElement>("a, button")?.focus());

@@ -35,7 +35,7 @@ const jsonLd = {
     },
     {
       "@type": "ProfessionalService",
-      name: `${person.name} — внедрение ИИ в бизнес`,
+      name: `${person.name} - внедрение ИИ в бизнес`,
       url: person.site,
       description: hero.lead,
       provider: { "@id": `${person.site}#person` },
@@ -130,7 +130,7 @@ export default function Home() {
             <h2 id="stack-h" className="h2">
               Как я строю ИИ-системы
             </h2>
-            <p className="section__lead">Шесть слоёв — и за каждый отвечает инженер, а не фреймворк.</p>
+            <p className="section__lead">Шесть слоёв. За каждый отвечает инженер, а не фреймворк.</p>
           </div>
           <ul className="cards">
             {layers.map((l, i) => (
