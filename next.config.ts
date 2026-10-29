@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   // next dev сам пишет AGENTS.md, если его запустил ИИ-агент; в репозитории он не нужен
   agentRules: false,
+  // Значок «N» в углу при next dev — только мешает смотреть страницу
+  devIndicators: false,
 };
 
 export default nextConfig;
