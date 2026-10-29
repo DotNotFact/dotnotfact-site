@@ -22,8 +22,10 @@ export const viewport: Viewport = {
   ],
 };
 
-// До первой отрисовки: блоки прячутся для появления только если движение разрешено и JS работает
-const motionFlag = `if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')`;
+// Анимации появления включаются в первом кадре отрисовки: если браузер кадры не
+// рисует (фоновая вкладка, экономия энергии), класса нет и текст сразу на месте,
+// а не висит невидимым в начале анимации. Кадр приходит до первого показа — без мигания.
+const motionFlag = `if(!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(function(){document.documentElement.classList.add('motion')})`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

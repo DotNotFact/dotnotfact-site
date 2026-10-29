@@ -167,7 +167,7 @@ a {
 }
 
 /* Органы управления и украшения не выделяются и не копируются */
-:is(button, .btn, .actions, .bar__name, .rail__nav, .rail__name, .pulse, .step__n, svg, img, .backdrop, summary) {
+:is(button, .btn, .actions, .bar__name, .bar__nav, .pulse, .step__n, svg, img, .backdrop, summary) {
   -webkit-user-select: none;
   user-select: none;
 }
@@ -180,7 +180,9 @@ a {
   touch-action: manipulation;
 }
 
-/* ── Живой фон ─────────────────────────────────────────────────────────── */
+/* ── Живой фон: три слоя глубины ───────────────────────────────────────────
+   Слои сдвигаются за мышью на разную глубину (--px, --py от -1 до 1):
+   дальний чуть-чуть, ближний сильнее — получается объём. */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -191,64 +193,98 @@ a {
   --py: 0;
 }
 
-.backdrop__grid {
+.layer {
   position: absolute;
-  inset: -40px;
-  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 80%);
-  translate: calc(var(--px) * -8px) calc(var(--py) * -8px);
+  inset: -60px;
 }
 
-.backdrop__glow {
+.layer--far {
+  translate: calc(var(--px) * -10px) calc(var(--py) * -10px);
+}
+
+.layer--mid {
+  translate: calc(var(--px) * -26px) calc(var(--py) * -22px);
+}
+
+.layer--near {
+  translate: calc(var(--px) * -54px) calc(var(--py) * -46px);
+}
+
+.backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 30%, transparent 85%);
+}
+
+.glow {
   position: absolute;
   border-radius: 50%;
   filter: blur(70px);
   will-change: transform;
 }
 
-.backdrop__glow--a {
-  top: -12vmax;
+.glow--a {
+  top: -10vmax;
   left: -8vmax;
   width: 46vmax;
   height: 46vmax;
   background: var(--glow-a);
-  translate: calc(var(--px) * 40px) calc(var(--py) * 40px);
   animation: drift-a 38s ease-in-out infinite alternate;
 }
 
-.backdrop__glow--b {
+.glow--b {
   top: 18vh;
   right: -14vmax;
   width: 40vmax;
   height: 40vmax;
   background: var(--glow-b);
-  translate: calc(var(--px) * -56px) calc(var(--py) * -40px);
   animation: drift-b 46s ease-in-out infinite alternate;
 }
 
-.backdrop__glow--c {
+.glow--c {
   bottom: -18vmax;
   left: 30vw;
   width: 34vmax;
   height: 34vmax;
   background: var(--glow-c);
-  translate: calc(var(--px) * 24px) calc(var(--py) * -30px);
   animation: drift-c 52s ease-in-out infinite alternate;
 }
 
-.backdrop__orbit {
+.glow--d {
+  top: 55vh;
+  left: -12vmax;
+  width: 30vmax;
+  height: 30vmax;
+  background: var(--glow-b);
+  animation: drift-b 60s ease-in-out infinite alternate-reverse;
+}
+
+/* Средний слой: орбиты и потоки данных */
+.orbit {
   position: absolute;
+  overflow: visible;
+}
+
+.orbit--right {
   top: 50%;
-  right: -12vmax;
+  right: -16vmax;
   width: 64vmax;
   height: 64vmax;
   margin-top: -32vmax;
   opacity: 0.55;
-  translate: calc(var(--px) * -22px) calc(var(--py) * -22px);
 }
 
-.backdrop__orbit :is(circle, line) {
+.orbit--left {
+  bottom: -14vmax;
+  left: -14vmax;
+  width: 44vmax;
+  height: 44vmax;
+  opacity: 0.45;
+}
+
+.orbit :is(circle, line) {
   fill: none;
   stroke: var(--accent);
   stroke-opacity: 0.22;
@@ -270,6 +306,67 @@ a {
 .orbit__nodes {
   animation-duration: 110s;
   animation-direction: reverse;
+}
+
+.orbit--left .orbit__ring {
+  animation-direction: reverse;
+  animation-duration: 130s;
+}
+
+.flows {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flow {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-opacity: 0.24;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 12;
+  animation: flow 9s linear infinite;
+}
+
+.flow__dot {
+  fill: var(--accent);
+  fill-opacity: 0.7;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+.flow__dot--late {
+  fill: var(--accent-2);
+}
+
+/* Ближний слой: плавающие фигуры по краям */
+.floater {
+  position: absolute;
+  opacity: 0.5;
+  animation: float 16s ease-in-out infinite;
+}
+
+.floater--ring {
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+}
+
+.floater--square {
+  border: 1.5px solid var(--accent-2);
+  border-radius: 4px;
+  rotate: 18deg;
+}
+
+.floater--dot {
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+}
+
+.floater--plus {
+  background:
+    linear-gradient(var(--accent), var(--accent)) center / 100% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center / 1.5px 100% no-repeat;
 }
 
 @keyframes drift-a {
@@ -296,10 +393,34 @@ a {
   }
 }
 
+@keyframes flow {
+  to {
+    stroke-dashoffset: -140;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(14px, -22px, 0) rotate(40deg);
+  }
+  66% {
+    transform: translate3d(-12px, 12px, 0) rotate(-25deg);
+  }
+}
+
 @media (max-width: 760px) {
-  .backdrop__orbit {
+  .orbit--right {
     right: -40vmax;
     opacity: 0.35;
+  }
+
+  .orbit--left,
+  .floater:nth-child(n + 7) {
+    display: none;
   }
 }
 
@@ -308,128 +429,23 @@ a {
   .backdrop {
     animation: none !important;
   }
+
+  .flow__dot {
+    display: none;
+  }
 }
 
-/* ── Сетка страницы ────────────────────────────────────────────────────────
-   Две вертикали на всю страницу: колонка слева и колонка содержимого.
-   Внутри содержимого любые две колонки делят ширину 1:1 с одним зазором —
-   правые края карточек всех секций стоят на одной линии. */
-.layout {
-  display: grid;
+/* ── Колонка страницы ──────────────────────────────────────────────────────
+   Одна колонка на всю страницу: шапка, секции и подвал стоят на одних двух
+   вертикалях. Внутри любые две колонки делят ширину 1:1 с одним зазором. */
+.container {
   width: 100%;
-  max-width: 1200px;
+  max-width: calc(960px + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-@media (min-width: 1040px) {
-  .layout {
-    grid-template-columns: 248px minmax(0, 1fr);
-    column-gap: 72px;
-  }
-}
-
-.content {
-  min-width: 0;
-  max-width: 820px;
-}
-
-/* ── Колонка слева (только на широких экранах) ─────────────────────────── */
-.rail {
-  display: none;
-}
-
-@media (min-width: 1040px) {
-  .rail {
-    position: sticky;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    height: 100svh;
-    padding-block: 48px;
-  }
-}
-
-.rail__name {
-  display: block;
-  font: 700 22px/1.15 var(--font-display), sans-serif;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.rail__role {
-  margin-top: 8px;
-  font-size: 16px;
-  color: var(--muted);
-}
-
-.rail .status {
-  margin-top: 20px;
-}
-
-.rail__nav {
-  display: grid;
-  gap: 2px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
-}
-
-.rail__nav a {
-  position: relative;
-  padding: 8px 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-/* Полоска-указатель — левее линии текста, чтобы текст стоял на линии имени */
-.rail__nav a::before {
-  content: "";
-  position: absolute;
-  left: -14px;
-  top: 50%;
-  width: 2px;
-  height: 0;
-  border-radius: 2px;
-  background: var(--accent);
-  translate: 0 -50%;
-  transition: height 0.25s ease;
-}
-
-.rail__nav a:hover {
-  color: var(--ink);
-}
-
-.rail__nav a:hover::before {
-  height: 18px;
-}
-
-.rail__contact {
-  display: grid;
-  gap: 12px;
-  margin-top: auto;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
-}
-
-.rail__contact .btn {
-  width: 100%;
-}
-
-.rail__link {
-  font-size: 15px;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.rail__link:hover {
-  color: var(--accent);
-}
-
-/* ── Полоса сверху (узкие экраны) ──────────────────────────────────────── */
+/* ── Шапка — по краям той же колонки ───────────────────────────────────── */
 .bar {
   position: sticky;
   top: 0;
@@ -439,25 +455,80 @@ a {
   border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 
-@media (min-width: 1040px) {
-  .bar {
+.bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 64px;
+}
+
+.bar__name {
+  margin-right: auto;
+  font: 700 15px/1 var(--font-display), sans-serif;
+  white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.bar__nav {
+  display: flex;
+  gap: 24px;
+}
+
+.bar__nav a {
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.bar__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  scale: 0 1;
+  transition: scale 0.25s ease;
+}
+
+.bar__nav a:hover {
+  color: var(--ink);
+}
+
+.bar__nav a:hover::after {
+  scale: 1 1;
+}
+
+@media (max-width: 860px) {
+  .bar__nav {
     display: none;
   }
 }
 
-.bar__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: 64px;
-  padding-inline: var(--gutter);
+@media (max-width: 400px) {
+  .bar__name {
+    font-size: 13px;
+  }
 }
 
-.bar__name {
-  font: 700 15px/1 var(--font-display), sans-serif;
-  color: var(--ink);
-  text-decoration: none;
+/* Печать — вся страница видна сразу, без появления и фона */
+@media print {
+  .backdrop,
+  .bar {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
 }
 
 /* ── Кнопки ────────────────────────────────────────────────────────────── */
@@ -558,13 +629,9 @@ a {
   padding-top: 48px;
 }
 
-@media (min-width: 1040px) {
-  .hero {
-    min-height: 82svh;
-  }
-}
 
 .hero__title {
+  margin-top: 28px;
   font: 700 clamp(2.2rem, 4.6vw, 3.7rem) / 1.06 var(--font-display), sans-serif;
   letter-spacing: -0.025em;
 }
