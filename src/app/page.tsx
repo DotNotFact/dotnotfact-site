@@ -1,9 +1,51 @@
 import type { CSSProperties } from "react";
+import { FlipCard } from "@/components/FlipCard";
 import { Icon } from "@/components/Icon";
+import { Logo } from "@/components/Logo";
 import { Motion } from "@/components/Motion";
-import { about, cta, directions, hero, manifesto, nav, notFor, person, steps, stories } from "@/content";
+import {
+  about,
+  aiPrinciples,
+  cta,
+  directions,
+  hero,
+  manifesto,
+  nav,
+  notFor,
+  person,
+  steps,
+  stories,
+} from "@/content";
 
 const tg = `https://t.me/${person.telegram}`;
+
+// Schema.org для Яндекса и Google: кто это, чем занимается и как с ним связаться.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${person.site}#person`,
+      name: person.name,
+      jobTitle: person.role,
+      url: person.site,
+      email: `mailto:${person.email}`,
+      address: { "@type": "PostalAddress", addressLocality: "Ессентуки", addressCountry: "RU" },
+      sameAs: [`https://github.com/${person.github}`, tg],
+      knowsAbout: ["C#", "ASP.NET Core", "PostgreSQL", "Next.js", "TypeScript", "LLM", "YandexGPT", "GigaChat"],
+    },
+    {
+      "@type": "ProfessionalService",
+      name: `${person.name} — разработка и продукты с ИИ`,
+      url: person.site,
+      description: hero.lead,
+      provider: { "@id": `${person.site}#person` },
+      areaServed: "RU",
+      availableLanguage: "ru",
+      knowsAbout: directions.map((d) => d.title),
+    },
+  ],
+};
 // Порядковый номер для задержки появления в группе
 const order = (i: number) => ({ "--i": i }) as CSSProperties;
 
@@ -11,11 +53,13 @@ const order = (i: number) => ({ "--i": i }) as CSSProperties;
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Motion />
 
       <header className="bar">
         <div className="bar__inner container">
           <a className="bar__name" href="#top">
+            <Logo />
             {person.name}
           </a>
           <nav className="bar__nav" aria-label="Разделы">
@@ -33,10 +77,13 @@ export default function Home() {
 
       <main id="top" className="container">
         <section className="hero">
-          <p className="status hero__in" style={order(0)}>
-            <span className="pulse" aria-hidden="true" />
-            {person.status}
-          </p>
+          <div className="hero__meta hero__in" style={order(0)}>
+            <p className="status">
+              <span className="pulse" aria-hidden="true" />
+              {person.status}
+            </p>
+            <p className="hero__role">{person.role}</p>
+          </div>
           <h1 className="hero__title">
             {hero.title.map((line, i) => (
               <span key={line} className="hero__line hero__in" style={order(i + 1)}>
@@ -70,18 +117,28 @@ export default function Home() {
           </h2>
           <ul className="cards">
             {directions.map((d, i) => (
-              <li key={d.title} className="card card--direction" data-reveal style={order(i % 2)}>
-                <span className="card__icon">
-                  <Icon name={d.icon} />
-                </span>
-                <h3>{d.title}</h3>
-                <p>{d.body}</p>
-                <p className="card__result">{d.result}</p>
-                <ul className="card__tags" aria-label="Технологии">
-                  {d.tags.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
+              <FlipCard key={d.title} d={d} i={i} tg={tg} />
+            ))}
+          </ul>
+        </section>
+
+        <section id="ai" className="section" aria-labelledby="ai-h">
+          <div className="section__head" data-reveal>
+            <h2 id="ai-h" className="h2">
+              ИИ в работе
+            </h2>
+            <p className="section__lead">Как в продукте, так и в том, как я его строю.</p>
+          </div>
+          <ul className="cards">
+            {aiPrinciples.map((a, i) => (
+              <li key={a.title} className="card card--principle" data-reveal style={order(i % 2)}>
+                <div className="card__head">
+                  <span className="card__icon">
+                    <Icon name={a.icon} />
+                  </span>
+                  <h3>{a.title}</h3>
+                </div>
+                <p>{a.body}</p>
               </li>
             ))}
           </ul>
@@ -173,7 +230,9 @@ export default function Home() {
           <span>
             © 2026 {person.name} · {person.place}
           </span>
-          <a href={`https://github.com/${person.github}`}>GitHub</a>
+          <a href={`https://github.com/${person.github}`} rel="me">
+            GitHub
+          </a>
         </footer>
       </main>
     </>

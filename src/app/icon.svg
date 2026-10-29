@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Знак «Д» в духе логотипа Next.js: тёмный круг, буква из прямых линий,
+       правая засечка уходит в прозрачность градиентом. -->
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a98bfa"/>
+      <stop offset="1" stop-color="#6aa2ff"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="#0f0d16"/>
+  <circle cx="32" cy="32" r="30.5" fill="none" stroke="url(#edge)" stroke-opacity=".7"/>
+  <!-- Крыша и правая стойка -->
+  <path d="M26 15h16v27" fill="none" stroke="#fff" stroke-width="5"/>
+  <!-- Левая стойка с изгибом наружу -->
+  <path d="M26 15c0 13-2.5 22-7 27" fill="none" stroke="#fff" stroke-width="5"/>
+  <!-- Основание и левая засечка вниз -->
+  <path d="M15 42h34" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="M17.5 39.5v9" fill="none" stroke="#fff" stroke-width="5"/>
+  <!-- Правая засечка уходит в прозрачность, как диагональ у N -->
+  <rect x="44" y="39.5" width="5" height="11" fill="url(#fade)"/>
+</svg>

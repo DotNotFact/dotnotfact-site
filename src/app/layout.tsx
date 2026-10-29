@@ -7,12 +7,40 @@ const display = Unbounded({ variable: "--font-display", subsets: ["latin", "cyri
 const body = Onest({ variable: "--font-body", subsets: ["latin", "cyrillic"] });
 const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin", "cyrillic"] });
 
-const title = `${person.name} — ${person.role.toLowerCase()}`;
+const title = `${person.name} — ${person.role}`;
+
+// Картинка превью — для ссылки в Telegram и мессенджерах. Адрес полный: на Pages
+// сайт живёт в подпапке, и относительный путь превью потерял бы её.
+const og = { url: `${person.site}og.png`, width: 1200, height: 630, alt: title };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(person.site),
   title,
   description: hero.lead,
-  openGraph: { title, description: hero.lead, locale: "ru_RU", type: "website" },
+  applicationName: person.name,
+  authors: [{ name: person.name, url: person.site }],
+  creator: person.name,
+  category: "technology",
+  // Запросы, по которым заказчик ищет такого исполнителя
+  keywords: [
+    "AI-инженер",
+    "разработчик ИИ-ботов",
+    "разработка на .NET",
+    "ASP.NET Core разработчик",
+    "Next.js разработчик",
+    "бот продаж с ИИ",
+    "YandexGPT",
+    "GigaChat",
+    "SaaS разработка",
+    "интеграция платежей ЮKassa",
+    "технический директор на часть недели",
+    "фриланс разработчик",
+  ],
+  alternates: { canonical: person.site },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  formatDetection: { telephone: false },
+  openGraph: { title, description: hero.lead, locale: "ru_RU", type: "website", url: person.site, images: [og] },
+  twitter: { card: "summary_large_image", title, description: hero.lead, images: [og.url] },
 };
 
 export const viewport: Viewport = {
