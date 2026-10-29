@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { Icon } from "@/components/Icon";
 import { Motion } from "@/components/Motion";
 import { about, cta, directions, hero, manifesto, nav, notFor, person, steps, stories } from "@/content";
 
@@ -69,10 +70,18 @@ export default function Home() {
           </h2>
           <ul className="cards">
             {directions.map((d, i) => (
-              <li key={d.title} className="card" data-reveal style={order(i % 2)}>
+              <li key={d.title} className="card card--direction" data-reveal style={order(i % 2)}>
+                <span className="card__icon">
+                  <Icon name={d.icon} />
+                </span>
                 <h3>{d.title}</h3>
                 <p>{d.body}</p>
-                <p className="card__foot">{d.proof}</p>
+                <p className="card__result">{d.result}</p>
+                <ul className="card__tags" aria-label="Технологии">
+                  {d.tags.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
@@ -102,7 +111,7 @@ export default function Home() {
           <h2 id="steps-h" className="h2" data-reveal>
             Как начинаем
           </h2>
-          <ol className="cards steps">
+          <ol className="cards cards--4 steps">
             {steps.map((s, i) => (
               <li key={s.title} className="step" data-reveal style={order(i % 2)}>
                 <span className="step__n" aria-hidden="true">
