@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 // «Добавить на главный экран» на телефоне: имя, цвета и иконка сайта
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${person.name} — ${person.role}`,
+    name: `${person.name} - ${person.role}`,
     short_name: "Побединский",
     description: hero.lead,
     start_url: person.site,

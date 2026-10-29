@@ -1,4 +1,4 @@
-// Знак «Д» — тот же, что иконка вкладки (src/app/icon.svg), для шапки.
+// Знак «Д» - тот же, что иконка вкладки (src/app/icon.svg), для шапки.
 export function Logo() {
   return (
     <svg className="logo" viewBox="0 0 64 64" aria-hidden="true">
